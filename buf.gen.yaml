@@ -1,0 +1,5 @@
+version: v1
+plugins:
+  - name: ts_proto
+    out: src/generated
+    opt: esModuleInterop=true,forceLong=long,useExactTypes=false

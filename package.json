@@ -1,0 +1,66 @@
+{
+  "name": "@bitfrost/bitfrostjs",
+  "description": "The TypeScript SDK for BitFrost",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./generated/*": {
+      "types": "./dist/generated/*.d.ts",
+      "import": "./dist/generated/*.js",
+      "require": "./dist/generated/*.cjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "generated/*": [
+        "dist/generated/*"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "pnpm generate-barrels && tsup",
+    "generate-barrels": "barrelsby -c barrelsby.json --delete -l all -S -s flat",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write .",
+    "docs": "typedoc"
+  },
+  "files": [
+    "dist"
+  ],
+  "packageManager": "pnpm@9.0.0",
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@types/node": "^24.2.0",
+    "barrelsby": "^2.8.1",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "prettier": "^3.6.2",
+    "ts-proto": "^2.7.5",
+    "tsup": "^8.5.0",
+    "typedoc": "^0.28.8",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.39.0",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "^2.6.3",
+    "@cosmjs/amino": "^0.34.0",
+    "@cosmjs/proto-signing": "^0.34.0",
+    "@cosmjs/stargate": "^0.34.0",
+    "@cosmjs/tendermint-rpc": "^0.34.0",
+    "bip39": "^3.1.0",
+    "long": "^5.3.2"
+  }
+}
