@@ -1,7 +1,7 @@
 # BitFrost TypeScript SDK
 
-
-The `@bitfrost/bitfrostjs` package provides simple abstractions for interacting with the BitFrost blockchain. It supports full query capabilities, transaction building, and sending transfers — both within the chain and cross‑chain.
+The `@bitfrost/bitfrostjs` package provides simple abstractions for interacting with the BitFrost blockchain. It
+supports full query capabilities, transaction building, and sending transfers — both within the chain and cross‑chain.
 
 The source code is located in the `src` directory.
 
@@ -33,8 +33,11 @@ cd ts-sdk
 pnpm install
 pnpm build
 pnpm link --global
+```
 
-# Link in your project
+Link to your project
+
+```bash
 pnpm link @bitfrost/bitfrostjs
 ```
 
@@ -83,15 +86,15 @@ console.log(res.transactionHash);
 const msg = {
   sourcePort: "transfer",
   sourceChannel: "channel-1",
-  token: { denom: "uint3", amount: "25000" },
+  token: {denom: "uint3", amount: "25000"},
   sender: wallet.getAddress(),
   receiver: "destination-address",
-  timeoutHeight: { revisionNumber: 0n, revisionHeight: 0n },
+  timeoutHeight: {revisionNumber: 0n, revisionHeight: 0n},
   timeoutTimestamp: BigInt(Date.now()) * 1_000_000n + 2n * 60n * 1_000_000_000n, // +2m
   memo: "",
 };
 
-const fee = { amount: [{ denom: "uint3", amount: "2000" }], gas: "200000" };
+const fee = {amount: [{denom: "uint3", amount: "2000"}], gas: "200000"};
 await tx.signAndBroadcast(wallet.getAddress(), [{
   typeUrl: "/ibc.applications.transfer.v1.MsgTransfer",
   value: msg,
@@ -104,12 +107,12 @@ await tx.signAndBroadcast(wallet.getAddress(), [{
 const eo = tx.extensions.bridge.makeOutboundTransfer({
   sender: wallet.getAddress(),
   destAddr: "external-chain-address",
-  assetId: { sourceChain: "dogecoin", denom: "doge" },
+  assetId: {sourceChain: "dogecoin", denom: "doge"},
   amount: "1000",
   destChainId: "dogecoin",
 });
 
-const fee = { amount: [{ denom: "uint3", amount: "2000" }], gas: "200000" };
+const fee = {amount: [{denom: "uint3", amount: "2000"}], gas: "200000"};
 const res = await tx.signAndBroadcast(wallet.getAddress(), [eo], fee, "Outbound transfer");
 console.log(res.transactionHash);
 ```
