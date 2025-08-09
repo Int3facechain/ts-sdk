@@ -30,6 +30,7 @@ git clone https://github.com/Int3facechain/ts-sdk
 cd ts-sdk
 
 # Build and link globally
+pnpm install
 pnpm build
 pnpm link --global
 
