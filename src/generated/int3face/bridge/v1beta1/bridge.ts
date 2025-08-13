@@ -1651,6 +1651,11 @@ export interface OutboundTransfer {
   finalizedTxHash: string;
   /** VotesNeeded is the number of votes needed to finalize the transfer */
   votesNeeded: Long;
+  /**
+   * FailureVotesNeeded is the number of votes needed to move the transfer to
+   * the FAILED status
+   */
+  failureVotesNeeded: Long;
 }
 
 export interface InboundTransferContext {
@@ -8416,6 +8421,7 @@ function createBaseOutboundTransfer(): OutboundTransfer {
     fees: undefined,
     finalizedTxHash: "",
     votesNeeded: Long.UZERO,
+    failureVotesNeeded: Long.UZERO,
   };
 }
 
@@ -8468,6 +8474,9 @@ export const OutboundTransfer: MessageFns<OutboundTransfer> = {
     }
     if (!message.votesNeeded.equals(Long.UZERO)) {
       writer.uint32(128).uint64(message.votesNeeded.toString());
+    }
+    if (!message.failureVotesNeeded.equals(Long.UZERO)) {
+      writer.uint32(136).uint64(message.failureVotesNeeded.toString());
     }
     return writer;
   },
@@ -8607,6 +8616,14 @@ export const OutboundTransfer: MessageFns<OutboundTransfer> = {
           message.votesNeeded = Long.fromString(reader.uint64().toString(), true);
           continue;
         }
+        case 17: {
+          if (tag !== 136) {
+            break;
+          }
+
+          message.failureVotesNeeded = Long.fromString(reader.uint64().toString(), true);
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -8634,6 +8651,7 @@ export const OutboundTransfer: MessageFns<OutboundTransfer> = {
       fees: isSet(object.fees) ? TransferFees.fromJSON(object.fees) : undefined,
       finalizedTxHash: isSet(object.finalizedTxHash) ? globalThis.String(object.finalizedTxHash) : "",
       votesNeeded: isSet(object.votesNeeded) ? Long.fromValue(object.votesNeeded) : Long.UZERO,
+      failureVotesNeeded: isSet(object.failureVotesNeeded) ? Long.fromValue(object.failureVotesNeeded) : Long.UZERO,
     };
   },
 
@@ -8687,6 +8705,9 @@ export const OutboundTransfer: MessageFns<OutboundTransfer> = {
     if (!message.votesNeeded.equals(Long.UZERO)) {
       obj.votesNeeded = (message.votesNeeded || Long.UZERO).toString();
     }
+    if (!message.failureVotesNeeded.equals(Long.UZERO)) {
+      obj.failureVotesNeeded = (message.failureVotesNeeded || Long.UZERO).toString();
+    }
     return obj;
   },
 
@@ -8724,6 +8745,9 @@ export const OutboundTransfer: MessageFns<OutboundTransfer> = {
     message.finalizedTxHash = object.finalizedTxHash ?? "";
     message.votesNeeded = (object.votesNeeded !== undefined && object.votesNeeded !== null)
       ? Long.fromValue(object.votesNeeded)
+      : Long.UZERO;
+    message.failureVotesNeeded = (object.failureVotesNeeded !== undefined && object.failureVotesNeeded !== null)
+      ? Long.fromValue(object.failureVotesNeeded)
       : Long.UZERO;
     return message;
   },

@@ -15,6 +15,7 @@ import { bridgeRegistryTypes, BridgeTxExtension, setupBridgeTxExtension } from '
 export type BitfrostExtensions = BitfrostQueryExtensions & BridgeTxExtension;
 
 export class BitfrostTxClient extends SigningStargateClient {
+  public readonly tmClient: Tendermint37Client;
   public readonly extensions: BitfrostExtensions;
 
   protected constructor(
@@ -23,6 +24,7 @@ export class BitfrostTxClient extends SigningStargateClient {
     options: SigningStargateClientOptions,
   ) {
     super(tmClient, signer, options);
+    this.tmClient = tmClient;
     this.extensions = QueryClient.withExtensions(
       tmClient,
       setupBitfrostQueryExtensions,
